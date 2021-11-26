@@ -1,5 +1,13 @@
 const ExpenseItem = () => {
-	return (<h1>Expense Item</h1>);
-}
- 
+  return (
+    <div className="expense-item">
+      <div>Date</div>
+      <div className="expense-item__description">
+        <h2>Title</h2>
+        <div className="expense-item__price">Amount</div>
+      </div>
+    </div>
+  );
+};
+
 export default ExpenseItem;
