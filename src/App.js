@@ -4,7 +4,7 @@ import Expenses from './components/Expenses/Expenses';
 import NewExpense from './components/NewExpense/NewExpense';
 
 function App() {
-  const expenses = [
+  const [expenses, setExpenses] = React.useState([
     {
       id: 'e1',
       title: 'Toilet Paper',
@@ -29,11 +29,18 @@ function App() {
       amount: 450,
       date: new Date(2021, 5, 12).toString(),
     },
-  ];
+  ]);
+
+  const handleAddNewExpense = (expense) => {
+    setExpenses((prev) => {
+      return [...prev, expense];
+    });
+    console.log(expenses);
+  };
 
   return (
     <div>
-      <NewExpense />
+      <NewExpense onAddNewExpense={handleAddNewExpense} />
       <Expenses expenses={expenses} />;
     </div>
   );

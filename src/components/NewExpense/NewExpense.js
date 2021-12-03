@@ -4,10 +4,14 @@ import ExpenseForm from './ExpenseForm/ExpenseForm';
 
 import './NewExpense.css';
 
-const NewExpense = () => {
+const NewExpense = ({ onAddNewExpense }) => {
+  const handleAddNewExpense = (expense) => {
+    onAddNewExpense(expense);
+  };
+
   return (
     <div className="new-expense">
-      <ExpenseForm />
+      <ExpenseForm onAddNewExpense={handleAddNewExpense} />
     </div>
   );
 };
