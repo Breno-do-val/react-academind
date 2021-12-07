@@ -2,8 +2,9 @@ import React from 'react';
 
 import './ExpenseForm.css';
 
-const ExpenseForm = ({ onAddNewExpense }) => {
+const ExpenseForm = ({ onAddNewExpense, onCancel }) => {
   const [userInput, setUserInput] = React.useState({
+    id: null,
     title: '',
     amount: '',
     date: '',
@@ -12,6 +13,7 @@ const ExpenseForm = ({ onAddNewExpense }) => {
   const handleTitleChange = (event) => {
     setUserInput((prev) => ({
       ...prev,
+      id: Math.random(),
       title: event.target.value,
     }));
   };
@@ -32,8 +34,8 @@ const ExpenseForm = ({ onAddNewExpense }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(userInput);
     onAddNewExpense(userInput);
+    onCancel();
   };
 
   return (
@@ -68,6 +70,7 @@ const ExpenseForm = ({ onAddNewExpense }) => {
         </div>
       </div>
       <div className="new-expense__actions">
+        <button type='button' onClick={onCancel}>Cancel</button>
         <button type="submit">Add expense</button>
       </div>
     </form>
