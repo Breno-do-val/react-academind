@@ -2,14 +2,40 @@ import React from "react";
 
 import CartContext from "./cart-context";
 
-const CartProvider = ({ children }) => {
-  const addItemToCartHandler = (item) => {};
+const defaultCartState = {
+  items: [],
+  totalAmount: 0,
+};
 
-  const removeItemFromCartHandler = (id) => {};
+const cartReducer = (state, action) => {
+  switch (action.type) {
+    case "ADD":
+      const updatedItems = state.items.concat(action.item);
+      const updatedTotalAmount =
+        state.totalAmount + action.item.price * action.item.amount;
+      return {
+        items: updatedItems,
+        totalAmount: updatedTotalAmount,
+      };
+    default:
+      return defaultCartState;
+  }
+};
+
+const CartProvider = ({ children }) => {
+  const [cartState, dispatch] = React.useReducer(cartReducer, defaultCartState);
+
+  const addItemToCartHandler = (item) => {
+    dispatch({ type: "ADD", item: item });
+  };
+
+  const removeItemFromCartHandler = (id) => {
+    dispatch({ type: "REMOVE", id: id });
+  };
 
   const cartContext = {
-    items: [],
-    totalAmount: 0,
+    items: cartState.items,
+    totalAmount: cartState.totalAmount,
     addItem: addItemToCartHandler,
     removeItem: removeItemFromCartHandler,
   };
@@ -18,3 +44,5 @@ const CartProvider = ({ children }) => {
     <CartContext.Provider value={cartContext}>{children}</CartContext.Provider>
   );
 };
+
+export default CartProvider;
