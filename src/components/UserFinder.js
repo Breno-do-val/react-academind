@@ -3,6 +3,7 @@ import UsersContext from "../state/users-context";
 
 import classes from "./UserFinder.module.css";
 
+import ErrorBoundary from "./ErrorBoundary";
 import Users from "./Users";
 
 class UserFinder extends Component {
@@ -46,7 +47,9 @@ class UserFinder extends Component {
           type="search"
           onChange={this.searchChangeHandler.bind(this)}
         />
-        <Users users={this.state.filteredUsers} />
+        <ErrorBoundary>
+          <Users users={this.state.filteredUsers} />
+        </ErrorBoundary>
       </Fragment>
     );
   }
