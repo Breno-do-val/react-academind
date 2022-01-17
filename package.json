@@ -1,0 +1,23 @@
+{
+  "name": "react-academind",
+  "version": "1.0.0",
+  "description": "",
+  "main": "redux-demo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Breno-do-val/react-academind.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Breno-do-val/react-academind/issues"
+  },
+  "homepage": "https://github.com/Breno-do-val/react-academind#readme",
+  "dependencies": {
+    "redux": "^4.1.2"
+  }
+}
