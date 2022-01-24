@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 
 import classes from "./Counter.module.css";
 
+import { counterActions } from "./../store/index";
+
 class Counter extends Component {
   toggleCounterHandler = () => {};
 
@@ -42,9 +44,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    increment: () => dispatch({ type: "increment" }),
-    incrementByTen: () => dispatch({ type: "incrementByTen", payload: 10 }),
-    decrement: () => dispatch({ type: "decrement" }),
+    increment: () => dispatch(counterActions.increment()),
+    incrementByTen: () => dispatch(counterActions.incrementByTen(10)),
+    decrement: () => dispatch(counterActions.decrement()),
   };
 };
 
