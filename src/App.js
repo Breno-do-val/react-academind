@@ -5,7 +5,9 @@ import Layout from "./components/Layout/Layout";
 import Products from "./components/Shop/Products";
 import Notification from './components/Notification/Notification';
 
-import { uiActions } from './store/ui-slice';
+import { sendCartData } from './store/cart-slice';
+
+let isInitial = true;
 
 function App() {
   const dispatch = useDispatch();
@@ -13,43 +15,14 @@ function App() {
   const cart = useSelector((state) => state.cart);
   const notification = useSelector((state) => state.ui.notification);
 
-  const sendCartData = React.useCallback(async () => {
-    dispatch(uiActions.showNotification({
-      status: 'pending',
-      title: 'Sending...',
-      message: 'Sending Cart...'
-    }));
-
-    const response = await fetch('https://redux-course-3c172-default-rtdb.firebaseio.com/cart', {
-      method: 'PUT',
-      body: JSON.stringify(cart),
-    });
-
-    if (!response.ok) {
-      dispatch(uiActions.showNotification({
-        status: 'error',
-        title: 'Error',
-        message: 'There was an error'
-      }));
+  React.useEffect(() => {
+    if (isInitial) {
+      isInitial = false;
+      return;
     }
 
-    dispatch(uiActions.showNotification({
-      status: 'success',
-      title: 'Success',
-      message: 'Cart sent succesfully'
-    }));
-  }, [cart, dispatch]);
-
-  React.useEffect(() => {
-    sendCartData()
-      .catch(err => {
-        dispatch(uiActions.showNotification({
-          status: 'error',
-          title: 'Error',
-          message: `${err}`
-        }));
-      });
-  }, [dispatch, sendCartData]);
+    dispatch(sendCartData(cart));
+  }, [dispatch, cart]);
 
   return (
     <>
