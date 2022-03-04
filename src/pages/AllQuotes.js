@@ -1,6 +1,8 @@
-const AllQuotes = () => {
+import QuoteList from '../components/quotes/QuoteList';
+
+const AllQuotes = ({ quotes }) => {
     return (
-        <h1>AllQuotes Page</h1>
+        <QuoteList quotes={quotes} />
     );
 };
 
