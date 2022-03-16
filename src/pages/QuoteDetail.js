@@ -1,25 +1,61 @@
-import { Fragment } from 'react';
-import { useParams, Route } from 'react-router-dom';
+import { Fragment, useEffect } from "react";
+import { useParams, Route, Link, useRouteMatch } from "react-router-dom";
+import useHttp from "../hooks/use-http";
+import { getSingleQuote } from "../lib/api";
 
-import Comments from '../components/comments/Comments';
-import HighlightedQuote from '../components/quotes/HighlightedQuote';
+import Comments from "../components/comments/Comments";
+import HighlightedQuote from "../components/quotes/HighlightedQuote";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
 
 const QuoteDetail = (props) => {
-    const { quoteId } = useParams();
+  const match = useRouteMatch();
+  const { quoteId } = useParams();
 
-    if(!props.quote) {
-        return <p>No quote found!</p>
-    }
+  const {
+    sendRequest,
+    status,
+    data: loadedQuote,
+    error,
+  } = useHttp(getSingleQuote, true);
 
-    return (
-        <Fragment>
-            <HighlightedQuote text={props.text} author={props.author}/>
-            <p>{quoteId}</p>
-            <Route path={`/quotes/${quoteId}/comments`}>
-                <Comments />
-            </Route>
-        </Fragment>
-    );
+  useEffect(() => {
+    sendRequest(quoteId);
+  }, [sendRequest, quoteId]);
+
+  if (status === "pending") {
+    <div className="centered">
+      <LoadingSpinner />
+    </div>;
+  }
+
+  if (error) {
+    return <p className="centered">{error}</p>;
+  }
+
+  if (!loadedQuote.text) {
+    return <p>No quote found!</p>;
+  }
+
+  if (!props.quote) {
+    return <p>No quote found!</p>;
+  }
+
+  return (
+    <Fragment>
+      <HighlightedQuote text={loadedQuote.text} author={loadedQuote.author} />
+      <Route path={`${match.path}`} exact>
+        <div className="centered">
+          <Link className="btn-flat" to={`${match.url}/comments`}>
+            Load Comments
+          </Link>
+        </div>
+      </Route>
+      <p>{quoteId}</p>
+      <Route path={`${match.path}`}>
+        <Comments />
+      </Route>
+    </Fragment>
+  );
 };
 
 export default QuoteDetail;
